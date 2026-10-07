@@ -1,18 +1,63 @@
-import axios from 'axios';
+import { useEffect } from 'react';
+import { useRef } from 'react';
+import { useState } from 'react';
 
 export default function App() {
-  return <div>App</div>;
+  const inputRef = useRef(null); // { current: null }
+  const fileRef = useRef(null);
+
+  useEffect(() => {
+    console.log(inputRef.current);
+    inputRef.current.focus();
+  }, []);
+
+  return (
+    <div>
+      <input type="text" ref={inputRef} /> {/* inputRef.current = <input />  */}
+      {/* document.querySelector('input') */}
+      <button
+        onClick={() => {
+          console.log(inputRef.current.value);
+        }}
+      >
+        Click
+      </button>
+      <input type="file" style={{ display: 'none' }} ref={fileRef} />
+      <div
+        style={{ width: '200px', height: '200px', backgroundColor: 'gray' }}
+        onClick={() => {
+          fileRef.current.click();
+        }}
+      >
+        Choose photo
+      </div>
+    </div>
+  );
 }
 
-// callback, promise
-// axios => promise based
-// handle promise object:
-// 1. then, catch, finally
-// 2. async/await (*** most popular nowaday)
+// export default function App() {
+//   const [state, setState] = useState(0);
+//   const ref = useRef(0); // ref equal to: { current: 0 }
 
-async function run() {
-  const res = await axios.get('https://jsonplaceholder.typicode.com/users');
-  console.log(res.data);
-}
+//   return (
+//     <div>
+//       <h1>State: {state}</h1>
+//       <button onClick={() => setState(state + 1)}>Update State</button>
+//       <h1>Ref: {ref.current}</h1>
+//       <button
+//         onClick={() => {
+//           console.log('click');
+//           ref.current = ref.current + 1;
+//           console.log(ref.current);
+//         }}
+//       >
+//         Update Ref
+//       </button>
+//     </div>
+//   );
+// }
 
-run();
+// Component memory: State(state changed cause component to re-render)
+// Another component memory: Ref (when ref value change not cause component to re-render)
+// useRef => { current: ? }: can mutate directly(not need setState fn)
+// use case: use with DOM
